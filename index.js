@@ -7,7 +7,7 @@ let x = 100;
 let y = 250;
 
 function moveCharacter() {}
-    setInterval (function() {
+setInterval(function () {
   if (direction === "west") {
     x = x - 1;
   }
@@ -22,25 +22,63 @@ function moveCharacter() {}
   }
   character.style.left = x + "px";
   character.style.bottom = y + "px";
-} , 1)
+}, 1);
 move(character).to(100, 250);
-setInterval (moveCharacter, 1)
+setInterval(moveCharacter, 1);
 
-document.addEventListener ('keydown', function(e) {
-    if (e.repeat) return;
-if (e.key ==='ArrowLeft') {
-    direction = 'west'
+document.addEventListener("keydown", function (e) {
+  if (e.repeat) return;
+  if (e.key === "ArrowLeft") {
+    direction = "west";
+  }
+  if (e.key === "ArrowUp") {
+    direction = "north";
+  }
+  if (e.key === "ArrowRight") {
+    direction = "east";
+  }
+  if (e.key === "ArrowDown") {
+    direction = "south";
+  }
+});
+document.addEventListener("keyup", function (e) {
+  direction = null;
+});
+
+function move(element) {
+  element.style.position = "fixed";
+
+  function moveToCoordinates(left, bottom) {
+    element.style.left = left + "px";
+    element.style.bottom = bottom + "px";
+  }
+  function moveWithArrowKeys(left, bottom) {
+    let direction = null;
+    let x = left;
+    let y = bottom;
+    element.style.left = x + "px";
+    element.style.bottom = y + "px";
+    function move(element) {
+      element.style.position = "fixed";
+
+      function moveToCoordinates(left, bottom) {
+        element.style.left = left + "px";
+        element.style.bottom = bottom + "px";
+      }
+
+      function moveWithArrowKeys(left, bottom) {}
+
+      return {
+        to: moveToCoordinates,
+        withArrowKeys: moveWithArrowKeys,
+      };
+    }
+  }
+  return {
+    to: moveToCoordinates,
+    moveWithArrowKeys: moveWithArrowKeys,
+  };
 }
-if (e.key === 'ArrowUp') {
-    direction = 'north'
-}
-if (e.key === 'ArrowRight') {
-    direction = 'east'
-}
-if (e.key === 'ArrowDown') {
-    direction = 'south'
-}
-})
 
 move(newImage("assets/tree.png")).to(200, 450);
 move(newImage("assets/pillar.png")).to(350, 250);
